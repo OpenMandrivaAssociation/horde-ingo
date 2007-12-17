@@ -19,7 +19,6 @@ Requires(post):	rpm-helper
 Requires:	horde >= 3.0
 Requires: 	horde-imp >= 4.0
 BuildArch:	noarch
-BuildRoot: 	%{_tmppath}/%{name}-%{version}
 
 %description
 Ingo is an email filter rules manager.
