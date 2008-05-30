@@ -11,7 +11,7 @@ Release:        %{release}
 Summary:	The Horde email filter rules Manager
 License:	GPL
 Group: 		System/Servers
-Source0:	ftp://ftp.horde.org/pub/%{module}/%{module}-h3-%{version}.tar.bz2
+Source0:	ftp://ftp.horde.org/pub/%{module}/%{module}-h3-%{version}.tar.gz
 Source1:	%{module}-horde.conf.bz2
 Patch0:		%{module}-1.0-path.patch
 URL:		http://www.horde.org/%{module}
@@ -36,11 +36,6 @@ agent in IMP H3 (4.0).
 %prep
 %setup -q -n %{module}-h3-%{version}
 %patch
-
-# fix encoding
-for file in `find . -type f`; do
-    perl -pi -e 'BEGIN {exit unless -T $ARGV[0];} tr/\r//d;' $file
-done
 
 %build
 
