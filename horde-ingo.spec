@@ -1,7 +1,7 @@
 %define module	ingo
 %define name	horde-%{module}
-%define version	1.2.1
-%define release	%mkrel 2
+%define version	1.2.2
+%define release	%mkrel 1
 
 %define _requires_exceptions pear(Horde.*)
 
@@ -13,10 +13,9 @@ License:	GPL
 Group: 		System/Servers
 URL:		http://www.horde.org/%{module}
 Source0:	ftp://ftp.horde.org/pub/%{module}/%{module}-h3-%{version}.tar.gz
-Source1:	%{module}-horde.conf.bz2
 Patch:		%{module}-h3-1.2.1-fhs.patch
 Requires(post):	rpm-helper
-Requires:	horde >= 3.0
+Requires:	horde >= 3.3.5
 Requires: 	horde-imp >= 4.0
 BuildArch:	noarch
 BuildRoot: 	%{_tmppath}/%{name}-%{version}
@@ -42,33 +41,61 @@ agent in IMP H3 (4.0).
 %install
 rm -rf %{buildroot}
 
+# apache configuration
+install -d -m 755 %{buildroot}%{_webappconfdir}
+cat > %{buildroot}%{_webappconfdir}/%{name}.conf <<EOF
+# %{name} Apache configuration file
+
+<Directory %{_datadir}/horde/%{module}/lib>
+    Deny from all
+</Directory>
+
+<Directory %{_datadir}/horde/%{module}/locale>
+    Deny from all
+</Directory>
+
+<Directory %{_datadir}/horde/%{module}/scripts>
+    Deny from all
+</Directory>
+
+<Directory %{_datadir}/horde/%{module}/templates>
+    Deny from all
+</Directory>
+EOF
+
 # horde configuration
 install -d -m 755 %{buildroot}%{_sysconfdir}/horde/registry.d
-bzcat %{SOURCE1} > %{buildroot}%{_sysconfdir}/horde/registry.d/%{module}.php
+cat > %{buildroot}%{_sysconfdir}/horde/registry.d/%{module}.php <<'EOF'
+<?php
+//
+// Ingo Horde configuration file
+//
+ 
+$this->applications['ingo'] = array(
+    'fileroot'    => $this->applications['horde']['fileroot'] . '/ingo',
+    'webroot'     => $this->applications['horde']['webroot'] . '/ingo',
+    'name'        => _("Filters"),
+    'status'      => 'active',
+    'provides'    => array('mail/blacklistFrom', 'mail/showBlacklist', 'mail/whitelistFrom', 'mail/showWhitelist', 'mail/applyFilters', 'mail/canApplyFilters', 'mail/showFilters'),
+    'menu_parent' => 'imp'
+);
+EOF
 
 # remove .htaccess files
 find . -name .htaccess -exec rm -f {} \;
 
 # install files
-install -d -m 755 %{buildroot}%{_var}/www/horde/%{module}
 install -d -m 755 %{buildroot}%{_datadir}/horde/%{module}
-install -d -m 755 %{buildroot}%{_sysconfdir}/horde
-cp -pR *.php %{buildroot}%{_var}/www/horde/%{module}
-cp -pR js %{buildroot}%{_var}/www/horde/%{module}
-cp -pR themes %{buildroot}%{_var}/www/horde/%{module}
+cp -pR *.php %{buildroot}%{_datadir}/horde/%{module}
+cp -pR js %{buildroot}%{_datadir}/horde/%{module}
+cp -pR themes %{buildroot}%{_datadir}/horde/%{module}
 cp -pR lib %{buildroot}%{_datadir}/horde/%{module}
 cp -pR locale %{buildroot}%{_datadir}/horde/%{module}
 cp -pR scripts %{buildroot}%{_datadir}/horde/%{module}
 cp -pR templates %{buildroot}%{_datadir}/horde/%{module}
 cp -pR config %{buildroot}%{_sysconfdir}/horde/%{module}
 
-# use symlinks to recreate original structure
-pushd %{buildroot}%{_var}/www/horde/%{module}
-ln -s ../../../..%{_sysconfdir}/horde/%{module} config
-ln -s ../../../..%{_datadir}/horde/%{module}/lib .
-ln -s ../../../..%{_datadir}/horde/%{module}/locale .
-ln -s ../../../..%{_datadir}/horde/%{module}/templates .
-popd
+install -d -m 755 %{buildroot}%{_sysconfdir}/horde
 pushd %{buildroot}%{_datadir}/horde/%{module}
 ln -s ../../../..%{_sysconfdir}/horde/%{module} config
 popd
@@ -92,13 +119,15 @@ if [ $1 = 1 ]; then
 	%create_ghostfile %{_sysconfdir}/horde/%{module}/conf.php apache apache 644
 	%create_ghostfile %{_sysconfdir}/horde/%{module}/conf.php.bak apache apache 644
 fi
+%_post_webapp
+
+%postun
+%_postun_webapp
 
 %files
 %defattr(-,root,root)
 %doc LICENSE README docs
+%config(noreplace) %{_webappconfdir}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/horde/registry.d/%{module}.php
 %config(noreplace) %{_sysconfdir}/horde/%{module}
 %{_datadir}/horde/%{module}
-%{_var}/www/horde/%{module}
-
-
