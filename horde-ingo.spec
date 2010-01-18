@@ -1,7 +1,7 @@
 %define module	ingo
 %define name	horde-%{module}
 %define version	1.2.3
-%define release	%mkrel 1
+%define release	%mkrel 2
 
 %define _requires_exceptions pear(Horde.*)
 
@@ -123,10 +123,14 @@ if [ $1 = 1 ]; then
 	%create_ghostfile %{_sysconfdir}/horde/%{module}/conf.php apache apache 644
 	%create_ghostfile %{_sysconfdir}/horde/%{module}/conf.php.bak apache apache 644
 fi
+%if %mdkversion < 201010
 %_post_webapp
+%endif
 
 %postun
+%if %mdkversion < 201010
 %_postun_webapp
+%endif
 
 %files
 %defattr(-,root,root)
