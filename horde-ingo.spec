@@ -1,7 +1,7 @@
 %define module	ingo
 %define name	horde-%{module}
 %define version	1.2.3
-%define release	%mkrel 2
+%define release	%mkrel 3
 
 %define _requires_exceptions pear(Horde.*)
 
@@ -18,7 +18,6 @@ Requires(post):	rpm-helper
 Requires:	horde >= 3.3.5
 Requires: 	horde-imp >= 4.0
 BuildArch:	noarch
-BuildRoot: 	%{_tmppath}/%{name}-%{version}
 
 %description
 Ingo is an email filter rules manager.
