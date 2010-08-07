@@ -1,7 +1,7 @@
 %define module	ingo
 %define name	horde-%{module}
-%define version	1.2.3
-%define release	%mkrel 3
+%define version	1.2.4
+%define release	%mkrel 1
 
 %define _requires_exceptions pear(Horde.*)
 
@@ -13,10 +13,10 @@ License:	GPL
 Group: 		System/Servers
 URL:		http://www.horde.org/%{module}
 Source0:	ftp://ftp.horde.org/pub/%{module}/%{module}-h3-%{version}.tar.gz
-Patch:		%{module}-h3-1.2.1-fhs.patch
+Patch0:		%{module}-h3-1.2.1-fhs.patch
 Requires(post):	rpm-helper
-Requires:	horde >= 3.3.5
-Requires: 	horde-imp >= 4.0
+Requires:	horde >= 3.3.8
+Requires: 	horde-imp >= 4.3
 BuildArch:	noarch
 
 %description
@@ -33,7 +33,7 @@ agent in IMP H3 (4.0).
 
 %prep
 %setup -q -n %{module}-h3-%{version}
-%patch -p 1
+%patch0 -p 1
 
 %build
 
