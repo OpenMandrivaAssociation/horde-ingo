@@ -1,0 +1,12 @@
+diff -Naur --exclude '*~' ingo-h3-1.2.1/config/prefs.php.dist ingo-h3-1.2.1-fhs/config/prefs.php.dist
+--- ingo-h3-1.2.1/config/prefs.php.dist	2008-06-15 23:14:38.000000000 +0200
++++ ingo-h3-1.2.1-fhs/config/prefs.php.dist	2009-02-05 15:27:10.000000000 +0100
+@@ -6,7 +6,7 @@
+  */
+ 
+ // Make sure that INGO_STORAGE_* constants are defined.
+-require_once dirname(__FILE__) . '/../lib/Storage.php';
++require_once '/usr/share/horde/ingo/lib/Storage.php';
+ 
+ // This preference group will only be displayed if the configured
+ // Ingo_Script:: driver can create script files.
