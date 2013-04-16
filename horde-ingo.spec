@@ -1,7 +1,7 @@
 %define module	ingo
 %define name	horde-%{module}
 %define version	1.2.4
-%define release:	2
+%define release:	3
 
 %define _requires_exceptions pear(Horde.*)
 
