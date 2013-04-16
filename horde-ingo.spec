@@ -1,20 +1,14 @@
 %define module	ingo
-%define name	horde-%{module}
-%define version	1.2.4
-%define release:	3
 
-%define _requires_exceptions pear(Horde.*)
-
-Name:           %{name}
-Version:        %{version}
-Release:        %{release}
+Name:           horde-%{module}
+Version:        1.2.4
+Release:        3
 Summary:	The Horde email filter rules Manager
 License:	GPL
 Group: 		System/Servers
 URL:		http://www.horde.org/%{module}
 Source0:	ftp://ftp.horde.org/pub/%{module}/%{module}-h3-%{version}.tar.gz
 Patch0:		%{module}-h3-1.2.1-fhs.patch
-Requires(post):	rpm-helper
 Requires:	horde >= 3.3.8
 Requires: 	horde-imp >= 4.3
 BuildArch:	noarch
