@@ -2,7 +2,7 @@
 
 Name:           horde-%{module}
 Version:        1.2.4
-Release:        3
+Release:        4
 Summary:	The Horde email filter rules Manager
 License:	GPL
 Group: 		System/Servers
@@ -32,8 +32,6 @@ agent in IMP H3 (4.0).
 %build
 
 %install
-rm -rf %{buildroot}
-
 # apache configuration
 install -d -m 755 %{buildroot}%{_webappconfdir}
 cat > %{buildroot}%{_webappconfdir}/%{name}.conf <<EOF
@@ -104,7 +102,6 @@ for file in `find %{buildroot}%{_datadir}/horde/%{module}/scripts`; do
 done
 
 %clean
-rm -rf %{buildroot}
 
 %post
 if [ $1 = 1 ]; then
@@ -112,13 +109,9 @@ if [ $1 = 1 ]; then
 	%create_ghostfile %{_sysconfdir}/horde/%{module}/conf.php apache apache 644
 	%create_ghostfile %{_sysconfdir}/horde/%{module}/conf.php.bak apache apache 644
 fi
-%if %mdkversion < 201010
-%_post_webapp
-%endif
 
 
 %files
-%defattr(-,root,root)
 %doc LICENSE README docs
 %config(noreplace) %{_webappconfdir}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/horde/registry.d/%{module}.php
