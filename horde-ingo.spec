@@ -3,7 +3,7 @@
 
 Name:           horde-%{module}
 Version:        1.2.4
-Release:        5
+Release:        6
 Summary:	The Horde email filter rules Manager
 
 License:	GPL
