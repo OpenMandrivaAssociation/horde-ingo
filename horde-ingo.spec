@@ -8,7 +8,7 @@ Summary:	The Horde email filter rules Manager
 
 License:	GPL
 Group: 		System/Servers
-URL:		http://www.horde.org/%{module}
+URL:		https://www.horde.org/%{module}
 Source0:	ftp://ftp.horde.org/pub/%{module}/%{module}-h3-%{version}.tar.gz
 Patch0:		%{module}-h3-1.2.1-fhs.patch
 Requires:	horde >= 3.3.8
